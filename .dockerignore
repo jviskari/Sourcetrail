@@ -1,0 +1,13 @@
+.git
+.claude
+build
+release
+*.o
+.bashrc
+.bash_profile
+.profile
+.zshrc
+.zprofile
+.gitconfig
+.mcp.json
+.ripgreprc
