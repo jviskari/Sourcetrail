@@ -3,7 +3,6 @@ add_files(
 
 	platform_includes/includesLinux.h
 	platform_includes/includesMac.h
-	platform_includes/includesWindows.h
 
 	qt/element/bookmark/QtBookmark.cpp
 	qt/element/bookmark/QtBookmark.h
@@ -199,8 +198,6 @@ add_files(
 	qt/utility/QtScrollSpeedChangeListener.cpp
 	qt/utility/QtScrollSpeedChangeListener.h
 	qt/utility/QtThreadedFunctor.h
-	qt/utility/QtWindowsTaskbarButton.cpp
-	qt/utility/QtWindowsTaskbarButton.h
 	qt/utility/utilityQt.cpp
 	qt/utility/utilityQt.h
 
@@ -338,17 +335,11 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 		qt/project_wizard/content/QtProjectWizardContentCxxPchFlags.h
 		qt/project_wizard/content/QtProjectWizardContentFlags.cpp
 		qt/project_wizard/content/QtProjectWizardContentFlags.h
-		qt/project_wizard/content/QtProjectWizardContentVS.cpp
-		qt/project_wizard/content/QtProjectWizardContentVS.h
 
 		utility/path_detector/cxx_header/CxxFrameworkPathDetector.cpp
 		utility/path_detector/cxx_header/CxxFrameworkPathDetector.h
 		utility/path_detector/cxx_header/CxxHeaderPathDetector.cpp
 		utility/path_detector/cxx_header/CxxHeaderPathDetector.h
-		utility/path_detector/cxx_header/CxxVs10To14HeaderPathDetector.cpp
-		utility/path_detector/cxx_header/CxxVs10To14HeaderPathDetector.h
-		utility/path_detector/cxx_header/CxxVs15HeaderPathDetector.cpp
-		utility/path_detector/cxx_header/CxxVs15HeaderPathDetector.h
 		utility/path_detector/cxx_header/utilityCxxHeaderDetection.cpp
 		utility/path_detector/cxx_header/utilityCxxHeaderDetection.h
 	)

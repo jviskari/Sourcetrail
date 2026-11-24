@@ -13,8 +13,6 @@ std::string sourceGroupTypeToString(SourceGroupType v)
 		return "C/C++ from Compilation Database";
 	case SOURCE_GROUP_CXX_CODEBLOCKS:
 		return "C/C++ from Code::Blocks";
-	case SOURCE_GROUP_CXX_VS:
-		return "C/C++ from Visual Studio";
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE
 	case SOURCE_GROUP_CUSTOM_COMMAND:
 		return "Custom Command Source Group";
@@ -37,8 +35,6 @@ std::string sourceGroupTypeToProjectSetupString(SourceGroupType v)
 		return "C/C++ from Compilation Database";
 	case SOURCE_GROUP_CXX_CODEBLOCKS:
 		return "C/C++ from Code::Blocks";
-	case SOURCE_GROUP_CXX_VS:
-		return "C/C++ from Visual Studio";
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE
 	case SOURCE_GROUP_CUSTOM_COMMAND:
 		return "Custom Command Source Group";
@@ -66,10 +62,6 @@ SourceGroupType stringToSourceGroupType(const std::string& v)
 	if (v == sourceGroupTypeToString(SOURCE_GROUP_CXX_CODEBLOCKS))
 	{
 		return SOURCE_GROUP_CXX_CODEBLOCKS;
-	}
-	if (v == sourceGroupTypeToString(SOURCE_GROUP_CXX_VS))
-	{
-		return SOURCE_GROUP_CXX_VS;
 	}
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE
 	if (v == sourceGroupTypeToString(SOURCE_GROUP_CUSTOM_COMMAND))

@@ -414,21 +414,6 @@ void QtMainWindow::refreshStyle()
 	QToolTip::setFont(tooltipFont);
 }
 
-void QtMainWindow::setWindowsTaskbarProgress(float progress)
-{
-	m_windowsTaskbarButton.setProgress(progress);
-}
-
-void QtMainWindow::hideWindowsTaskbarProgress()
-{
-	m_windowsTaskbarButton.hideProgress();
-}
-
-void QtMainWindow::showEvent(QShowEvent* e)
-{
-	m_windowsTaskbarButton.setWindow(this);
-}
-
 void QtMainWindow::keyPressEvent(QKeyEvent* event)
 {
 	switch (event->key())

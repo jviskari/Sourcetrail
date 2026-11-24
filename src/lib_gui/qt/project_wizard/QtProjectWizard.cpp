@@ -48,7 +48,6 @@
 #	include "QtProjectWizardContentPathsHeaderSearch.h"
 #	include "QtProjectWizardContentPathsHeaderSearchGlobal.h"
 #	include "QtProjectWizardContentPathsIndexedHeaders.h"
-#	include "QtProjectWizardContentVS.h"
 #	include "SourceGroupSettingsCEmpty.h"
 #	include "SourceGroupSettingsCppEmpty.h"
 #	include "SourceGroupSettingsCxxCdb.h"
@@ -60,47 +59,6 @@
 namespace
 {
 #if BUILD_CXX_LANGUAGE_PACKAGE
-
-bool applicationSettingsContainVisualStudioHeaderSearchPaths()
-{
-	std::vector<FilePath> expandedPaths;
-	const std::shared_ptr<CombinedPathDetector> headerPathDetector =
-		utility::getCxxVsHeaderPathDetector();
-	for (const std::string& detectorName: headerPathDetector->getWorkingDetectorNames())
-	{
-		for (const FilePath& path: headerPathDetector->getPathsForDetector(detectorName))
-		{
-			utility::append(expandedPaths, path.expandEnvironmentVariables());
-		}
-	}
-
-	std::vector<FilePath> usedExpandedGlobalHeaderSearchPaths =
-		ApplicationSettings::getInstance()->getHeaderSearchPathsExpanded();
-	for (const FilePath& usedExpandedPath: usedExpandedGlobalHeaderSearchPaths)
-	{
-		for (const FilePath& expandedPath: expandedPaths)
-		{
-			if (expandedPath == usedExpandedPath)
-			{
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
-void addMsvcCompatibilityFlagsOnDemand(std::shared_ptr<SourceGroupSettingsWithCxxPathsAndFlags> settings)
-{
-	if (applicationSettingsContainVisualStudioHeaderSearchPaths())
-	{
-		std::vector<std::wstring> flags = settings->getCompilerFlags();
-		flags.push_back(L"-fms-extensions");
-		flags.push_back(L"-fms-compatibility");
-		flags.push_back(L"-fms-compatibility-version=19");
-		settings->setCompilerFlags(flags);
-	}
-}
 
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE
 
@@ -818,26 +776,6 @@ void QtProjectWizard::newSourceGroup()
 	window->updateSubTitle(QStringLiteral("Type Selection"));
 }
 
-void QtProjectWizard::newSourceGroupFromVS()
-{
-#if BUILD_CXX_LANGUAGE_PACKAGE
-	QtProjectWizardWindow* window = createWindowWithContent([](QtProjectWizardWindow* window) {
-		window->setPreferredSize(QSize(560, 320));
-		return new QtProjectWizardContentVS(window);
-	});
-	window->resize(QSize(560, 320));
-
-	connect(window, &QtProjectWizardWindow::next, [this]() {
-		selectedProjectType(SOURCE_GROUP_CXX_CDB);
-	});
-
-	window->show();
-	window->setNextEnabled(true);
-	window->setPreviousEnabled(true);
-	window->updateSubTitle(QStringLiteral("C/C++ from Visual Studio"));
-#endif	  // BUILD_CXX_LANGUAGE_PACKAGE
-}
-
 void QtProjectWizard::selectedProjectType(SourceGroupType sourceGroupType)
 {
 	const std::string sourceGroupId = utility::getUuidString();
@@ -850,7 +788,6 @@ void QtProjectWizard::selectedProjectType(SourceGroupType sourceGroupType)
 	{
 		std::shared_ptr<SourceGroupSettingsCEmpty> cxxSettings =
 			std::make_shared<SourceGroupSettingsCEmpty>(sourceGroupId, m_projectSettings.get());
-		addMsvcCompatibilityFlagsOnDemand(cxxSettings);
 		settings = cxxSettings;
 	}
 	break;
@@ -858,7 +795,6 @@ void QtProjectWizard::selectedProjectType(SourceGroupType sourceGroupType)
 	{
 		std::shared_ptr<SourceGroupSettingsCppEmpty> cxxSettings =
 			std::make_shared<SourceGroupSettingsCppEmpty>(sourceGroupId, m_projectSettings.get());
-		addMsvcCompatibilityFlagsOnDemand(cxxSettings);
 		settings = cxxSettings;
 	}
 	break;
@@ -871,13 +807,9 @@ void QtProjectWizard::selectedProjectType(SourceGroupType sourceGroupType)
 		std::shared_ptr<SourceGroupSettingsCxxCodeblocks> cxxSettings =
 			std::make_shared<SourceGroupSettingsCxxCodeblocks>(
 				sourceGroupId, m_projectSettings.get());
-		addMsvcCompatibilityFlagsOnDemand(cxxSettings);
 		settings = cxxSettings;
 	}
 	break;
-	case SOURCE_GROUP_CXX_VS:
-		newSourceGroupFromVS();
-		return;
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE
 
 

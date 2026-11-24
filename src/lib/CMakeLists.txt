@@ -617,15 +617,6 @@ add_files(
 	utility/Version.h
 )
 
-if (WIN32)
-	add_files(
-		LIB
-
-		utility/utilityWindows.cpp
-		utility/utilityWindows.h
-	)
-endif()
-
 if (BUILD_CXX_LANGUAGE_PACKAGE)
 	add_files(
 		LIB

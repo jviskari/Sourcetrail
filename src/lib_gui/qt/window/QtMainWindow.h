@@ -8,7 +8,6 @@
 #include <QMainWindow>
 
 #include "QtWindowStack.h"
-#include "QtWindowsTaskbarButton.h"
 #include "SearchMatch.h"
 
 class Bookmark;
@@ -80,8 +79,6 @@ public:
 	void setContentEnabled(bool enabled);
 	void refreshStyle();
 
-	void setWindowsTaskbarProgress(float progress);
-	void hideWindowsTaskbarProgress();
 
 signals:
 	void showScreenSearch();
@@ -89,7 +86,6 @@ signals:
 	void hideIndexingDialog();
 
 protected:
-	virtual void showEvent(QShowEvent* event) override;
 	virtual void keyPressEvent(QKeyEvent* event) override;
 	virtual void contextMenuEvent(QContextMenuEvent* event) override;
 	virtual void closeEvent(QCloseEvent* event) override;
@@ -203,7 +199,6 @@ private:
 
 	QtWindowStack m_windowStack;
 
-	QtWindowsTaskbarButton m_windowsTaskbarButton;
 };
 
 #endif	  // QT_MAIN_WINDOW_H
