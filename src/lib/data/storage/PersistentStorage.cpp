@@ -470,7 +470,6 @@ void PersistentStorage::buildCaches()
 
 	buildFilePathMaps();
 	buildSearchIndex();
-	buildMemberEdgeIdOrderMap();
 	buildHierarchyCache();
 }
 
@@ -2920,17 +2919,7 @@ void PersistentStorage::addEdgesToGraph(const std::vector<Id>& newEdgeIds, Graph
 		if (sourceNode && targetNode)
 		{
 			Edge::EdgeType type = Edge::intToType(storageEdge.type);
-			Id edgeId = storageEdge.id;
-			if (type & Edge::EDGE_MEMBER && m_memberEdgeIdOrderMap.size())
-			{
-				auto it = m_memberEdgeIdOrderMap.find(edgeId);
-				if (it != m_memberEdgeIdOrderMap.end())
-				{
-					edgeId = it->second;
-				}
-			}
-
-			graph->createEdge(edgeId, type, sourceNode, targetNode);
+			graph->createEdge(storageEdge.id, type, sourceNode, targetNode);
 		}
 		else
 		{
@@ -3255,11 +3244,6 @@ void PersistentStorage::buildFilePathMaps()
 		m_fileNodeComplete.emplace(file.id, file.complete);
 		m_fileNodeIndexed.emplace(file.id, file.indexed);
 		m_fileNodeLanguage.emplace(file.id, file.languageIdentifier);
-
-		if (!m_hasJavaFiles && path.extension() == L".java")
-		{
-			m_hasJavaFiles = true;
-		}
 	});
 
 	m_sqliteIndexStorage.forEach<StorageSymbol>([&](StorageSymbol&& symbol) {
@@ -3366,78 +3350,6 @@ void PersistentStorage::buildFullTextSearchIndex() const
 	{
 		thread->join();
 	}
-}
-
-void PersistentStorage::buildMemberEdgeIdOrderMap()
-{
-	TRACE();
-
-	if (!m_hasJavaFiles)
-	{
-		return;
-	}
-
-	std::vector<Id> childNodeIds;
-	std::unordered_map<Id, Id> childIdToMemberEdgeIdMap;
-
-	m_sqliteIndexStorage.forEachOfType<StorageEdge>(
-		Edge::typeToInt(Edge::EDGE_MEMBER),
-		[&childNodeIds, &childIdToMemberEdgeIdMap](StorageEdge&& edge) {
-			childNodeIds.push_back(edge.targetNodeId);
-			childIdToMemberEdgeIdMap.emplace(edge.targetNodeId, edge.id);
-		});
-
-	std::vector<Id> locationIds;
-	std::unordered_map<Id, Id> locationIdToElementIdMap;
-	for (const StorageOccurrence& occurrence:
-		 m_sqliteIndexStorage.getOccurrencesForElementIds(childNodeIds))
-	{
-		locationIds.push_back(occurrence.sourceLocationId);
-		locationIdToElementIdMap.emplace(occurrence.sourceLocationId, occurrence.elementId);
-	}
-
-	SourceLocationCollection collection;
-	for (const StorageSourceLocation& location:
-		 m_sqliteIndexStorage.getAllByIds<StorageSourceLocation>(locationIds))
-	{
-		const LocationType locType = intToLocationType(location.type);
-		if (locType != LOCATION_TOKEN)
-		{
-			continue;
-		}
-
-		const FilePath path(m_fileNodePaths[location.fileNodeId]);
-		if (path.extension() == L".java")
-		{
-			collection.addSourceLocation(
-				intToLocationType(location.type),
-				location.id,
-				std::vector<Id>(),
-				FilePath(std::to_wstring(location.fileNodeId)),
-				location.startLine,
-				location.startCol,
-				location.endLine,
-				location.endCol);
-		}
-	}
-
-	// Set first 3 bits to 1 to avoid collisions
-	Id baseId = ~(~Id(0) >> 3) + 1;
-
-	collection.forEachSourceLocation([&](SourceLocation* location) {
-		auto it = locationIdToElementIdMap.find(location->getLocationId());
-		if (it != locationIdToElementIdMap.end())
-		{
-			auto it2 = childIdToMemberEdgeIdMap.find(it->second);
-			if (it2 != childIdToMemberEdgeIdMap.end())
-			{
-				if (m_memberEdgeIdOrderMap.emplace(it2->second, baseId).second)
-				{
-					baseId++;
-				}
-			}
-		}
-	});
 }
 
 void PersistentStorage::buildHierarchyCache()

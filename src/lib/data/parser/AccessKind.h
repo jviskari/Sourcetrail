@@ -4,7 +4,7 @@
 #include <string>
 
 enum AccessKind
-{	 // these values need to be the same as AccessKind in Java code
+{	 // these values are stored in the database, do not reorder
 	ACCESS_NONE = 0,
 	ACCESS_PUBLIC = 1,
 	ACCESS_PROTECTED = 2,

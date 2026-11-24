@@ -83,10 +83,6 @@ QtStartScreen::QtStartScreen(QWidget* parent)
 		  ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/cpp_icon.png").wstr()))
 	, m_cIcon(QString::fromStdWString(
 		  ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/c_icon.png").wstr()))
-	, m_pythonIcon(QString::fromStdWString(
-		  ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/python_icon.png").wstr()))
-	, m_javaIcon(QString::fromStdWString(
-		  ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/java_icon.png").wstr()))
 	, m_projectIcon(QString::fromStdWString(
 		  ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/empty_icon.png").wstr()))
 	, m_githubIcon(QString::fromStdWString(
@@ -120,16 +116,6 @@ void QtStartScreen::updateButtons()
 				button->setIcon(m_cppIcon);
 				break;
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE
-#if BUILD_JAVA_LANGUAGE_PACKAGE
-			case LANGUAGE_JAVA:
-				button->setIcon(m_javaIcon);
-				break;
-#endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
-#if BUILD_PYTHON_LANGUAGE_PACKAGE
-			case LANGUAGE_PYTHON:
-				button->setIcon(m_pythonIcon);
-				break;
-#endif	  // BUILD_PYTHON_LANGUAGE_PACKAGE
 			case LANGUAGE_CUSTOM:
 			default:
 				button->setIcon(m_projectIcon);

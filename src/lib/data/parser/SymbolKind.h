@@ -2,7 +2,7 @@
 #define SYMBOL_KIND_H
 
 enum SymbolKind
-{	 // these values need to be the same as SymbolKind in Java code
+{	 // these values are stored in the database, do not reorder
 	SYMBOL_ANNOTATION = 1,
 	SYMBOL_BUILTIN_TYPE = 2,
 	SYMBOL_CLASS = 3,

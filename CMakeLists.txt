@@ -4,8 +4,6 @@ if (WIN32 AND (CMAKE_GENERATOR STREQUAL "Ninja"))
 	set(CMAKE_CONFIGURATION_TYPES ${CMAKE_BUILD_TYPE})
 endif()
 set(BUILD_CXX_LANGUAGE_PACKAGE OFF CACHE BOOL "Add C and C++ support to the Sourcetrail indexer.")
-set(BUILD_JAVA_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Java support to the Sourcetrail indexer.")
-set(BUILD_PYTHON_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Python support to the Sourcetrail indexer.")
 set(DOCKER_BUILD OFF CACHE BOOL "Build runs in Docker")
 set(TREAT_WARNINGS_AS_ERRORS ON CACHE BOOL "Treat compiler warnings as errors")
 
@@ -43,8 +41,6 @@ set(APP_INDEXER_NAME "${PROJECT_NAME}_indexer")
 set(LIB_UTILITY_PROJECT_NAME "${PROJECT_NAME}_lib_utility")
 set(LIB_GUI_PROJECT_NAME "${PROJECT_NAME}_lib_gui")
 set(LIB_CXX_PROJECT_NAME "${PROJECT_NAME}_lib_cxx")
-set(LIB_JAVA_PROJECT_NAME "${PROJECT_NAME}_lib_java")
-set(LIB_PYTHON_PROJECT_NAME "${PROJECT_NAME}_lib_python")
 set(LIB_PROJECT_NAME "${PROJECT_NAME}_lib")
 set(TEST_PROJECT_NAME "${PROJECT_NAME}_test")
 
@@ -291,8 +287,6 @@ add_subdirectory(src/indexer)
 add_subdirectory(src/lib)
 add_subdirectory(src/lib_cxx)
 add_subdirectory(src/lib_gui)
-add_subdirectory(src/lib_java)
-add_subdirectory(src/lib_python)
 add_subdirectory(src/lib_utility)
 add_subdirectory(src/test)
 
@@ -340,7 +334,6 @@ set_property(
 		"${LIB_GUI_INCLUDE_PATHS}"
 		"${LIB_UTILITY_INCLUDE_PATHS}"
 		"${LIB_CXX_INCLUDE_PATHS}"
-		"${LIB_JAVA_INCLUDE_PATHS}"
 		"${CMAKE_BINARY_DIR}/src/lib"
 )
 
@@ -445,84 +438,6 @@ else()
 endif()
 
 
-# Lib Java ---------------------------------------------------------------------
-
-if (BUILD_JAVA_LANGUAGE_PACKAGE)
-
-	find_package(JNI)
-
-	add_library(${LIB_JAVA_PROJECT_NAME} ${LIB_JAVA_FILES})
-
-	create_source_groups(${LIB_JAVA_FILES})
-
-	set_property(
-		TARGET ${LIB_JAVA_PROJECT_NAME}
-		PROPERTY INCLUDE_DIRECTORIES
-			"${LIB_JAVA_INCLUDE_PATHS}"
-			"${LIB_UTILITY_INCLUDE_PATHS}"
-			"${LIB_INCLUDE_PATHS}"
-			"${LIB_GUI_INCLUDE_PATHS}"
-			"${CMAKE_BINARY_DIR}/src/lib"
-	)
-
-	target_include_directories(${LIB_JAVA_PROJECT_NAME} SYSTEM
-		PUBLIC ${JNI_INCLUDE_DIRS}
-		${Boost_INCLUDE_DIRS}
-	)
-
-	link_directories(${Boost_LIBRARY_DIRS})
-
-	target_link_libraries(${LIB_JAVA_PROJECT_NAME} ${LIB_UTILITY_PROJECT_NAME} ${LIB_PROJECT_NAME})
-
-	add_custom_command(
-		TARGET ${LIB_JAVA_PROJECT_NAME}
-		PRE_BUILD
-		COMMAND ${BASH} ${PROJECT_SOURCE_DIR}/script/update_java_indexer.sh
-		COMMENT "updating java indexer jars"
-	)
-
-else()
-
-	message(STATUS "Building the Java indexer will be skipped. You can enable building this target by setting 'BUILD_JAVA_LANGUAGE_PACKAGE' to 'ON'.")
-
-endif()
-
-
-# Lib Python ---------------------------------------------------------------------
-
-if (BUILD_PYTHON_LANGUAGE_PACKAGE)
-
-	add_library(${LIB_PYTHON_PROJECT_NAME} ${LIB_PYTHON_FILES})
-
-	create_source_groups(${LIB_PYTHON_FILES})
-
-	set_property(
-		TARGET ${LIB_PYTHON_PROJECT_NAME}
-		PROPERTY INCLUDE_DIRECTORIES
-			"${LIB_PYTHON_INCLUDE_PATHS}"
-			"${LIB_UTILITY_INCLUDE_PATHS}"
-			"${LIB_INCLUDE_PATHS}"
-			"${CMAKE_BINARY_DIR}/src/lib"
-	)
-
-	#link_directories(${Boost_LIBRARY_DIRS})
-
-	target_link_libraries(${LIB_PYTHON_PROJECT_NAME} ${LIB_UTILITY_PROJECT_NAME} ${LIB_PROJECT_NAME})
-
-	add_custom_command(
-		TARGET ${LIB_PYTHON_PROJECT_NAME}
-		PRE_BUILD
-		COMMAND ${BASH} ${PROJECT_SOURCE_DIR}/script/download_python_indexer.sh
-		COMMENT "download python indexer"
-	)
-
-else()
-
-	message(STATUS "Building the Python indexer will be skipped. You can enable building this target by setting 'BUILD_PYTHON_LANGUAGE_PACKAGE' to 'ON'.")
-
-endif()
-
-
 # Lib Gui ----------------------------------------------------------------------
 
 # Find includes in corresponding build directories
@@ -564,8 +479,6 @@ set_property(
 		"${CMAKE_BINARY_DIR}/src/lib_gui"
 		"${CMAKE_BINARY_DIR}/src/lib"
 		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_INCLUDE_PATHS}>
-		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_INCLUDE_PATHS}>
-		$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_INCLUDE_PATHS}>
 )
 
 # include external header without warnings
@@ -635,8 +548,6 @@ target_link_libraries(
 	${APP_INDEXER_NAME}
 	${LIB_GUI_PROJECT_NAME}
 	$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_PROJECT_NAME}>
-	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_PROJECT_NAME}>
-	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_PROJECT_NAME}>
 	${LIB_PROJECT_NAME}
 )
 
@@ -655,8 +566,6 @@ set_property(
 		"${CMAKE_BINARY_DIR}/src/lib_gui"
 		"${CMAKE_BINARY_DIR}/src/lib"
 		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_INCLUDE_PATHS}>
-		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_INCLUDE_PATHS}>
-		$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_INCLUDE_PATHS}>
 )
 
 
@@ -711,8 +620,6 @@ target_link_libraries(
 	${APP_PROJECT_NAME}
 	${LIB_GUI_PROJECT_NAME}
 	$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_PROJECT_NAME}>
-	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_PROJECT_NAME}>
-	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_PROJECT_NAME}>
 	${LIB_PROJECT_NAME}
 )
 
@@ -726,8 +633,6 @@ set_property(
 		"${CMAKE_BINARY_DIR}/src/lib_gui"
 		"${CMAKE_BINARY_DIR}/src/lib"
 		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_INCLUDE_PATHS}>
-		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_INCLUDE_PATHS}>
-		$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_INCLUDE_PATHS}>
 )
 
 target_include_directories(${APP_PROJECT_NAME} SYSTEM
@@ -815,13 +720,9 @@ target_link_libraries(
 	${TEST_PROJECT_NAME}
 	${LIB_GUI_PROJECT_NAME}
 	$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_PROJECT_NAME}>
-	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_PROJECT_NAME}>
-	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_PROJECT_NAME}>
 	${LIB_PROJECT_NAME}
 	${LIB_GUI_PROJECT_NAME}
 	$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_PROJECT_NAME}>
-	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_PROJECT_NAME}>
-	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_PROJECT_NAME}>
 )
 
 set_property(
@@ -836,8 +737,6 @@ set_property(
 		"${Boost_INCLUDE_DIRS}"
 		"${CMAKE_BINARY_DIR}/src/lib"
 		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_INCLUDE_PATHS}>
-		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_INCLUDE_PATHS}>
-		$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_INCLUDE_PATHS}>
 )
 
 if (WIN32)

@@ -49,8 +49,6 @@ private:
 	std::vector<QtRecentProjectButton*> m_recentProjectsButtons;
 	const QIcon m_cppIcon;
 	const QIcon m_cIcon;
-	const QIcon m_pythonIcon;
-	const QIcon m_javaIcon;
 	const QIcon m_projectIcon;
 	const QIcon m_githubIcon;
 };

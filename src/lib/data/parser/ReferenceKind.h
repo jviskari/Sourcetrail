@@ -2,7 +2,7 @@
 #define REFERENCE_KIND_H
 
 enum ReferenceKind
-{	 // these values need to be the same as ReferenceKind in Java code
+{	 // these values are stored in the database, do not reorder
 	REFERENCE_UNDEFINED = 0,
 	REFERENCE_TYPE_USAGE = 1,
 	REFERENCE_USAGE = 2,
