@@ -422,6 +422,20 @@ bool CxxAstVisitor::TraverseClassTemplateSpecializationDecl(clang::ClassTemplate
 		}
 	}
 
+	// Since LLVM 16 the injected class name of a specialization is no longer the declaration that
+	// carries the base classes, so they have to be traversed here.
+	if (ReturnValue && D->hasDefinition())
+	{
+		for (const auto& base: D->bases())
+		{
+			if (!traverseCXXBaseSpecifier(base))
+			{
+				ReturnValue = false;
+				break;
+			}
+		}
+	}
+
 	if (ReturnValue && ShouldVisitChildren)
 	{
 		traverseDeclContextHelper(clang::dyn_cast<clang::DeclContext>(D));

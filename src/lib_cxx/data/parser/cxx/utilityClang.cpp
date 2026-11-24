@@ -78,15 +78,15 @@ SymbolKind utility::convertTagKind(const clang::TagTypeKind tagKind)
 {
 	switch (tagKind)
 	{
-	case clang::TTK_Struct:
+	case clang::TagTypeKind::Struct:
 		return SYMBOL_STRUCT;
-	case clang::TTK_Union:
+	case clang::TagTypeKind::Union:
 		return SYMBOL_UNION;
-	case clang::TTK_Class:
+	case clang::TagTypeKind::Class:
 		return SYMBOL_CLASS;
-	case clang::TTK_Enum:
+	case clang::TagTypeKind::Enum:
 		return SYMBOL_ENUM;
-	case clang::TTK_Interface:
+	case clang::TagTypeKind::Interface:
 		return SYMBOL_KIND_MAX;
 	default:
 		return SYMBOL_KIND_MAX;
@@ -129,7 +129,7 @@ SymbolKind utility::getSymbolKind(const clang::VarDecl* d)
 std::wstring utility::getFileNameOfFileEntry(const clang::FileEntry* entry)
 {
 	std::wstring fileName = L"";
-	if (entry != nullptr && entry->isValid())
+	if (entry != nullptr)
 	{
 		fileName = utility::decodeFromUtf8(entry->tryGetRealPathName().str());
 		if (fileName.empty())
