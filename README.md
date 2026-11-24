@@ -61,6 +61,8 @@ $ cmake --build build
 
 In-source builds are not allowed, always use a separate build directory.
 
+The application links to the project repository (Help menu, About box, start window) only if you configure its URL, for example `-DPROJECT_URL=https://github.com/<owner>/<repo>`. Without it these links are hidden.
+
 ### Running
 
 Run `build/app/Sourcetrail` directly from the build directory. At runtime it needs the resources in `bin/app/data` and `bin/app/user`, and CMake creates symlinks to them inside the build directory.

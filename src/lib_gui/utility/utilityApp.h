@@ -16,7 +16,14 @@ struct ProcessOutput
 	int exitCode;
 };
 
+// URLs of the project repository, all empty if no project url was configured at build time.
+std::string getProjectUrl();
 std::string getDocumentationLink();
+std::string getChangelogLink();
+std::string getIssuesLink();
+
+// Returns an html link to a section of the documentation, or just the text if there is no link.
+std::string getDocumentationLinkHtml(const std::string& anchor, const std::string& text);
 
 std::wstring searchPath(const std::wstring& bin, bool& ok);
 

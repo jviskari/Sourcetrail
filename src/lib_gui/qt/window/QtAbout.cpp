@@ -108,12 +108,20 @@ void QtAbout::setupAbout()
 	}
 
 	{
-		QLabel* webLabel = new QLabel(
-			"<b>Repository: <a href=\"https://github.com/CoatiSoftware/Sourcetrail\" "
-			"style=\"color: "
-			"white;\">github.com/CoatiSoftware/Sourcetrail</a></b>",
-			this);
+		QString text =
+			"<b>This is an independent fork and is not affiliated with the original authors.</b><br />"
+			"Original project (archived): <a href=\"https://github.com/CoatiSoftware/Sourcetrail\" "
+			"style=\"color: white;\">github.com/CoatiSoftware/Sourcetrail</a>";
+		const QString projectUrl = QString::fromStdString(utility::getProjectUrl());
+		if (!projectUrl.isEmpty())
+		{
+			text += "<br /><b>Repository: <a href=\"" + projectUrl +
+				"\" style=\"color: white;\">" + projectUrl + "</a></b>";
+		}
+
+		QLabel* webLabel = new QLabel(text, this);
 		webLabel->setObjectName(QStringLiteral("small"));
+		webLabel->setWordWrap(true);
 		webLabel->setOpenExternalLinks(true);
 		windowLayout->addWidget(webLabel);
 		windowLayout->addSpacing(10);

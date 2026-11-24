@@ -19,10 +19,10 @@ QtProjectWizardContentPathsFrameworkSearchGlobal::QtProjectWizardContentPathsFra
 		"Framework Search Paths.<br />"
 		"<br />"
 		"They define where MacOS framework containers (.framework) are found "
-		"(See <a href=\"" +
-		utility::getDocumentationLink() +
-		"#finding-system-header-locations\">"
-		"Finding System Header Locations</a> or use the auto detection below)."));
+		"(See " +
+		utility::getDocumentationLinkHtml(
+			"finding-system-header-locations", "Finding System Header Locations") +
+		" or use the auto detection below)."));
 
 	m_pathDetector = utility::getCxxFrameworkPathDetector();
 	m_makePathsRelativeToProjectFileLocation = false;

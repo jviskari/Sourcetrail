@@ -4,6 +4,7 @@ if (WIN32 AND (CMAKE_GENERATOR STREQUAL "Ninja"))
 	set(CMAKE_CONFIGURATION_TYPES ${CMAKE_BUILD_TYPE})
 endif()
 set(BUILD_CXX_LANGUAGE_PACKAGE ON CACHE BOOL "Add C and C++ support to the Sourcetrail indexer.")
+set(PROJECT_URL "" CACHE STRING "URL of the project repository (GitHub style layout), used for links in the application. Links are hidden if empty.")
 set(DOCKER_BUILD OFF CACHE BOOL "Build runs in Docker")
 set(TREAT_WARNINGS_AS_ERRORS ON CACHE BOOL "Treat compiler warnings as errors")
 
@@ -347,6 +348,12 @@ target_link_libraries(${LIB_PROJECT_NAME} ${LIB_UTILITY_PROJECT_NAME} ${LIB_GUI_
 configure_file(
 	"${CMAKE_SOURCE_DIR}/cmake/language_packages.h.in"
 	"${CMAKE_BINARY_DIR}/src/lib/language_packages.h"
+)
+
+#configure project info (repository url)
+configure_file(
+	"${CMAKE_SOURCE_DIR}/cmake/project_info.h.in"
+	"${CMAKE_BINARY_DIR}/src/lib/project_info.h"
 )
 
 

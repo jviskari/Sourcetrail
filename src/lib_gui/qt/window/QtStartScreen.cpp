@@ -13,6 +13,7 @@
 #include "ProjectSettings.h"
 #include "ResourcePaths.h"
 #include "Version.h"
+#include "utilityApp.h"
 #include "utilityQt.h"
 
 QtRecentProjectButton::QtRecentProjectButton(QWidget* parent): QPushButton(parent) {}
@@ -174,21 +175,23 @@ void QtStartScreen::setupStartScreen()
 
 		col->addSpacing(20);
 
-		QPushButton* githubButton = new QPushButton(QStringLiteral("View on GitHub"), this);
-		githubButton->setAttribute(Qt::WA_LayoutUsesWidgetRect);	// fixes layouting on Mac
-		githubButton->setObjectName(QStringLiteral("infoButton"));
-		githubButton->setIcon(m_githubIcon);
-		githubButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-		connect(
-			githubButton,
-			&QPushButton::clicked,
-			[]()
-			{
-				QDesktopServices::openUrl(QUrl(
-					QStringLiteral("https://github.com/CoatiSoftware/Sourcetrail"),
-					QUrl::TolerantMode));
-			});
-		col->addWidget(githubButton);
+		if (!utility::getProjectUrl().empty())
+		{
+			QPushButton* githubButton = new QPushButton(QStringLiteral("View Repository"), this);
+			githubButton->setAttribute(Qt::WA_LayoutUsesWidgetRect);	// fixes layouting on Mac
+			githubButton->setObjectName(QStringLiteral("infoButton"));
+			githubButton->setIcon(m_githubIcon);
+			githubButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+			connect(
+				githubButton,
+				&QPushButton::clicked,
+				[]()
+				{
+					QDesktopServices::openUrl(
+						QUrl(QString::fromStdString(utility::getProjectUrl()), QUrl::TolerantMode));
+				});
+			col->addWidget(githubButton);
+		}
 
 		col->addSpacing(35);
 		col->addStretch();

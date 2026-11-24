@@ -1,0 +1,8 @@
+#ifndef PROJECT_INFO_H
+#define PROJECT_INFO_H
+
+// Base URL of the project repository (GitHub style layout), set with -DPROJECT_URL=...
+// Empty if not configured, in that case the application does not show links to the project.
+#define PROJECT_URL "@PROJECT_URL@"
+
+#endif // PROJECT_INFO_H

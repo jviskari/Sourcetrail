@@ -16,26 +16,17 @@ Sourcetrail is an interactive source explorer that simplifies navigation in exis
 * **Graph:** The graph displays the structure of your source code. It focuses on the currently selected symbol and directly shows all incoming and outgoing dependencies to other symbols.
 * **Code:** The Code view displays all source locations of the currently selected symbol in a list of code snippets. Clicking on a different source location allows you to change the selection and dig deeper.
 
-Note: Sourcetrail currently supports the languages C/C++, Java and Python. Much of the UI design is therefore based on these languages and might change as soon as other languages are supported. For more information have a look at [supported languages](#supported-languages).
+Note: Sourcetrail currently supports the languages C and C++. Much of the UI design is therefore based on these languages and might change as soon as other languages are supported. For more information have a look at [supported languages](#supported-languages).
 
 ## Supported Languages
 
 ### C
 
-C support is powered by [Clang 11.0.0](https://clang.llvm.org/). For issues loading C code, please have a look at [Clang language compatibility](https://clang.llvm.org/compatibility.html) or report a bug in our [bug tracker](https://github.com/CoatiSoftware/SourcetrailBugTracker).
+C support is powered by [Clang 18](https://clang.llvm.org/). For issues loading C code, please have a look at [Clang language compatibility](https://clang.llvm.org/compatibility.html) or report a bug in the issue tracker of this project.
 
 ### C++
 
-C++ support is powered by [Clang 11.0.0](https://clang.llvm.org/). For more Information please visit [Clang C++ Status](https://clang.llvm.org/cxx_status.html). For issues loading C++ code, please have a look at [Clang language compatibility](https://clang.llvm.org/compatibility.html) or report a bug in our [bug tracker](https://github.com/CoatiSoftware/SourcetrailBugTracker).
-
-### Java
-
-Sourcetrail includes support for Java 12 and lower which is powered by [Eclipse JDT](https://github.com/eclipse/eclipse.jdt.core). If you encounter any issues while using Sourcetrail on a Java project, please let us know by providing a minimal example in our [bug tracker](https://github.com/CoatiSoftware/SourcetrailBugTracker).
-
-### Python
-
-Sourcetrail includes support for Python 2 and Python 3 which is powered by our open-source [SourcetrailPythonIndexer](https://github.com/CoatiSoftware/SourcetrailPythonIndexer). If you encounter any issues while using Sourcetrail on a Python project, please let us know by providing a minimal example in our [bug tracker](https://github.com/CoatiSoftware/SourcetrailPythonIndexer/issues).
-
+C++ support is powered by [Clang 18](https://clang.llvm.org/). For more Information please visit [Clang C++ Status](https://clang.llvm.org/cxx_status.html). For issues loading C++ code, please have a look at [Clang language compatibility](https://clang.llvm.org/compatibility.html) or report a bug in the issue tracker of this project.
 
 # Getting Started
 
@@ -43,7 +34,7 @@ This short introduction will briefly guide you through the project setup and the
 
 ## Starting Up Sourcetrail
 
-Once you've [downloaded](https://github.com/CoatiSoftware/Sourcetrail/releases) Sourcetrail successfully you are ready to run the application. For assistance wth installation, visit the [installation](#installation) section.
+Once you've built Sourcetrail successfully (see the [README](README.md)) you are ready to run the application. For assistance wth installation, visit the [installation](#installation) section.
 
 > **Tasks:**
 > * Launch Sourcetrail.
@@ -86,7 +77,7 @@ The Source Group setup types for C & C++ are the same.
 If you are using [CMake](https://cmake.org/) or [Make](https://www.gnu.org/software/make/) as build environment you can export a [clang JSON Compilation Database](https://clang.llvm.org/docs/JSONCompilationDatabase.html) as `compile_commands.json` file. A Compilation Database holds all information necessary for building the project, such as source files, include paths and compiler flags. Having a Compilation Database makes project setup within Sourcetrail a lot easier. We recommend using this approach if possible.
 
 Exporting a Compilation Database:
-* From **CMake** by defining the `CMAKE_EXPORT_COMPILE_COMMANDS` flag. (not supported on for Visual Studio CMake generators)
+* From **CMake** by defining the `CMAKE_EXPORT_COMPILE_COMMANDS` flag. 
 * For **Make** projects use [Bear](https://github.com/rizsotto/Bear). Bear generates a `compile_commands.json` file during a simulated build process. Bear has been tested on FreeBSD, GNU/Linux and OS X.
 * From **Qt Creator since version 4.8** by selecting the "Generate Compilation Database" from the "Build" menu.
 
@@ -94,45 +85,11 @@ If you managed to export a `compile_commands.json` file, then please continue at
 
 <img src="docs/documentation/project_setup_wizard_start_cdb.png" height="600" alt="Project Setup Wizard Start CDB">
 
-**Are you using Visual Studio?**
-
-If you are using Visual Studio you can continue at [Source Group creation from Visual Studio](#create-a-project-from-visual-studio) and export a Compilation Database with our [Visual Studio Plugin](#visual-studio).
-
-<img src="docs/documentation/project_setup_wizard_start_vs.png" height="600" alt="Project Setup Wizard Start VS">
-
 **Create Empty**
 
 If neither of the above options apply to your project, please continue at [create an empty C/C++ Source Group](#create-an-empty-cxx-project) and return here once the project is created.
 
 <img src="docs/documentation/project_setup_wizard_source_group_type.png" height="600" alt="Project Setup Wizard Source Group Type">
-
-#### Source Group Setup for Java
-
-**Are you using Gradle?**
-
-If you are using Gradle you can continue at [Source Group creation from Gradle](#create-a-project-from-gradle-configuration) to automatically setup your Source Group using your Gradle build configuration.
-
-<img src="docs/documentation/project_setup_wizard_start_java_gradle.png" height="600" alt="Project Setup Wizard Start Java Gradle">
-
-**Are you using Maven?**
-
-If you are using Maven please continue at [Source Group creation from Maven](#create-a-project-from-maven-configuration) to automatically setup your Source Group using your Maven build configuration.
-
-<img src="docs/documentation/project_setup_wizard_start_java_maven.png" height="600" alt="Project Setup Wizard Start Java Maven">
-
-**Create Empty**
-
-If you do not have your project configured using Gradle or Maven, please continue at [Create an Empty Java Source Group](#create-an-empty-java-project) and come back here as soon as the project is created.
-
-<img src="docs/documentation/project_setup_wizard_start_java_empty.png" height="600" alt="Project Setup Wizard Start Java Empty">
-
-#### Source Group Setup for Python
-
-**Create empty**
-
-If you want to browse your Python source code with Sourcetrail, please continue at [Create an Empty Python Source Group](#create-an-empty-python-project) and come back here as soon as the project is created.
-
-<img src="docs/documentation/project_setup_wizard_start_python_empty.png" height="600" alt="Project Setup Wizard Start Python Empty">
 
 ## Source Indexing
 
@@ -240,10 +197,6 @@ The Sourcetrail team wishes you a good start with our product, lots of saved tim
 
 # Installation
 
-## Windows
-
-Download and open the zip file and extract its contents into a temporary folder of your choice. Run the `setup.exe` and go through the wizard. You can now launch Sourcetrail from your start menu.
-
 ## macOS
 Download and open the Sourcetrail.dmg file and drag Sourcetrail.app into the applications folder. You can now launch Sourcetrail from your Applications.
 
@@ -273,18 +226,10 @@ The data folder holds certain files that are used by Sourcetrail to run the prog
 
 | Platform | Location
 | --- | ---
-| Windows | `C:/Users/You/AppData/Local/Coati Software/Sourcetrail` _(used for dynamic data and settings)_ `install_directory/Coati Software/Sourcetrail/data` _(used for static app data)_
 | macOS | `~/Library/Application Support/Sourcetrail`
 | Linux | `~/.config/sourcetrail`
 
 ## Finding System Header Locations
-
-### Windows
-
-These files usually ship with your compiler. For the Visual Studio IDE the system headers can be found at:
-`<path_to_visual_studio>/VC/include/`
-If you don't use the Visual Studio IDE you can also try to find your system headers in a subdirectory of:
-`C:/Program Files (x86)/Windows Kits/`
 
 ### macOS
 
@@ -315,33 +260,6 @@ You will find the header search paths your compiler uses in the output between t
 End of search list.
 ```
 
-
-## Finding Java Runtime Library Location
-
-The current version of Sourcetrail requires an installation of the Java 8 runtime environment to index any Java project. Make sure that Sourcetrail and your JRE share the same kind or architecture (a 32 bit Sourcetrail requires a 32 bit JRE). To locate the required library file, please refer to the applicable description below.
-
-### Windows
-
-The Java Runtime Library (called `jvm.dll`) can be found inside of your JRE install folder and looks like this:
-`<path_to_jre>/bin/client/jvm.dll`
-
-### macOS
-
-The Java Runtime Library (called `libjli.dylib`) can be found inside of your JDK install folder. Run the following command in your terminal to find the location of your default Java installation:
-`/usr/libexec/java_home`
-
-This should give you a path looking like this:
-`/Library/Java/JavaVirtualMachines/<jdk_version>/Contents/Home`
-
-The `"libjli.dylib"` should be available at:
-`/Library/Java/JavaVirtualMachines/<jdk_version>/Contents/MacOS/libjli.dylib`
-
-Insert the full path to `libjli.dylib` into the **Java Path** setting in the [Preferences Window](#preferences-window).
-
-### Linux
-
-The Java Runtime Library (called `libjvm.so`) can be found inside of your JRE install folder and looks like this:
-`<path_to_jre>/lib/<arch>/server/libjvm.so`
 
 # Interface
 
@@ -418,7 +336,6 @@ On every start of Sourcetrail you are shown the start window. It allows for crea
 * Clicking `Open Project` will let you open an existing Sourcetrail project by choosing from a file dialog.
 * Clicking on one of the `Recent Projects` will open this project. The list shows a maximum of 7 items ordered by recent first.
 * Pressing `ESC` will close the window.
-* Click `Check for new version` to connect to [https://sourcetrail.com](https://sourcetrail.com) and check if a new version is available.
 
 
 ### Path List Box
@@ -478,11 +395,7 @@ The Preferences window lets you define settings for all projects. You can open t
 | Plugin Port | Port number that Sourcetrail sends outgoing messages to.
 | Indexer threads | Define how many parallel threads are used during indexing. Setting this value to `default` will cause Sourcetrail to detect the ideal number of threads based on the CPU and use as many threads for indexing.
 | Multi process C/C++ indexing | Enable C/C++ indexer threads to run in a different process. This prevents the application from crashing due to unforeseen exceptions while indexing.
-| Java Path | If you want to use Sourcetrail on Java source code, please specify a path to your Java 8 runtime library. Please keep in mind that a 32 bit Sourcetrail requires a 32 bit version of Java while a 64 bit Sourcetrail requires a 64 bit Java to be working correctly. You can either use the button below for automatic detection or add the path manually. For instructions on how to find your Java runtime path see (Finding Java Runtime Library Location](#finding-java-runtime-library-location).
-| JRE System Library | Add the jar files of your JRE System Library. These jars can be found inside your JRE install directory. You can either use the button below for automatic detection or add the paths manually.
-| Maven Path | Only required for indexing projects using Maven. Provide the location of your installed Maven executable. You can also use the auto detection.
-| Post Processing | Enable a post processing step to solve unsolved references after the indexing is done. These references will be marked "ambiguous" to indicate that some of these edges may never be encountered during runtime of the indexed code because the post processing only relies on symbol names and types.
-| Global Include Paths | Set header search paths that are used for **all** of your projects (e.g. std headers). An option for automatic detection of these paths is available for Clang, GCC and the Visual Studio compiler. For instructions on how to add paths manually see [Path List Box](#path-list-box). For instructions on how to find the system header paths see [Finding System Header Locations](#finding-system-header-locations).
+| Global Include Paths | Set header search paths that are used for **all** of your projects (e.g. std headers). An option for automatic detection of these paths is available for Clang and GCC. For instructions on how to add paths manually see [Path List Box](#path-list-box). For instructions on how to find the system header paths see [Finding System Header Locations](#finding-system-header-locations).
 | Global Framework Search Paths | **(macOS only)** Define the search paths for `.framework` files for all of your projects. An option for automatic detection of these paths is available for Clang and GCC. <br />For instructions on how to add paths see [Path List Box](#path-list-box).
 
 ### Project Setup Wizard
@@ -505,10 +418,6 @@ This dialog displays the number of files for indexing and clearing before indexi
 * **Incomplete & updated files:** Reindexes all files that had errors during last indexing, all files depending on those and all updated files.
 * **All files:** Deletes the previous index and reindexes all files.
 
-
-**Shallow Python Indexing**
-
-For Python projects a checkbox **Shallow Python Indexing** is additionally displayed. When checked, references within your code base (calls, usages, etc.) are resolved by name, which is imprecise but much faster than in-depth indexing. Use this option for a quick first indexing pass and start browsing the code base while running a second pass for in-depth indexing.
 
 <img src="docs/documentation/start_indexing_dialog.png" width="600" alt="Start Indexing Dialog">
 
@@ -674,7 +583,7 @@ This dialog is shown after indexing was stopped, giving you information about in
 * **Documentation**
     * Opens this documentation of Sourcetrail in your web browser by URL.
 * **Changelog**
-    * Opens the [changelog](https://github.com/CoatiSoftware/SourcetrailBugTracker#changelog) of Sourcetrail in your web browser by URL.
+    * Opens the [changelog](CHANGELOG.md) in your web browser. Only available if the build was configured with a project URL (`-DPROJECT_URL=...`).
 * **Bug Tracker**
     * Opens Sourcetrail's bug tracker in your web browser by URL.
 * **License**
@@ -689,60 +598,60 @@ This dialog is shown after indexing was stopped, giving you information about in
 
 #### General
 
-| Shortcut | Windows | macOS | Linux
-| --- | --- | --- | ---
-| Switch Focus Between Graph/Code Views | `Tab` | `Tab` | `Tab`
-| Preferences | `Ctrl + ,` | `Cmd + ,` | `Ctrl + ,`
-| New Project | `Ctrl + N` | `Cmd + N` | `Ctrl + N`
-| Open Project | `Ctrl + O` | `Cmd + O` | `Ctrl + O`
-| Close Window | `Alt + F4` | `Cmd + W` | `Ctrl + W`
-| Hide Window |  | `Cmd + H` |
-| Refresh | `F5` | `Cmd + R` | `F5`
-| Full Refresh | `Shift + F5` | `Cmd + Shift + R` | `Shift + F5`
-| Back | `Z` / `Alt + Left` / `Backspace` | `Z` / `Cmd + [` / `Backspace` | `Z` / `Alt + Left` / `Backspace`
-| Forward | `Shift + Z` / `Alt + Right` | `Shift + Z` / `Cmd + ]` | `Shift + Z` / `Alt + Right`
-| Find Symbol | `Ctrl + F` | `Cmd + F` | `Ctrl + F`
-| Find Text | `Ctrl + Shift + F` | `Cmd + Shift + F` | `Ctrl + Shift + F`
-| Find On-Screen | `Ctrl + D` | `Cmd + D` | `Ctrl + D`
-| To overview | `Ctrl + Home` | `Cmd + Home` / `Cmd + Up` | `Ctrl + Home`
-| New Tab | `Ctrl + T` | `Cmd + T` | `Ctrl + T`
-| Close Tab | `Ctrl + W` | `Cmd + W` | `Ctrl + W`
-| Select Next Tab | `Ctrl + Tab` | `Ctrl + Tab` | `Ctrl + Tab`
-| Select Previous Tab | `Ctrl + Shift + Tab` | `Ctrl + Shift + Tab` | `Ctrl + Shift + Tab`
-| Larger Font | `Ctrl + +` | `Cmd + +` | `Ctrl + +`
-| Smaller Font | `Ctrl + -` | `Cmd + -` | `Ctrl + -`
-| Reset Font Size | `Ctrl + 0` | `Cmd + 0` | `Ctrl + 0`
-| Bookmark Active Symbol | `Ctrl + S` | `Cmd + S` | `Ctrl + S`
-| Bookmark Manager | `Ctrl + B` | `Cmd + B` | `Ctrl + B`
+| Shortcut | macOS | Linux
+| --- | --- | ---
+| Switch Focus Between Graph/Code Views | `Tab` | `Tab`
+| Preferences | `Cmd + ,` | `Ctrl + ,`
+| New Project | `Cmd + N` | `Ctrl + N`
+| Open Project | `Cmd + O` | `Ctrl + O`
+| Close Window | `Cmd + W` | `Ctrl + W`
+| Hide Window | `Cmd + H` |
+| Refresh | `Cmd + R` | `F5`
+| Full Refresh | `Cmd + Shift + R` | `Shift + F5`
+| Back | `Z` / `Cmd + [` / `Backspace` | `Z` / `Alt + Left` / `Backspace`
+| Forward | `Shift + Z` / `Cmd + ]` | `Shift + Z` / `Alt + Right`
+| Find Symbol | `Cmd + F` | `Ctrl + F`
+| Find Text | `Cmd + Shift + F` | `Ctrl + Shift + F`
+| Find On-Screen | `Cmd + D` | `Ctrl + D`
+| To overview | `Cmd + Home` / `Cmd + Up` | `Ctrl + Home`
+| New Tab | `Cmd + T` | `Ctrl + T`
+| Close Tab | `Cmd + W` | `Ctrl + W`
+| Select Next Tab | `Ctrl + Tab` | `Ctrl + Tab`
+| Select Previous Tab | `Ctrl + Shift + Tab` | `Ctrl + Shift + Tab`
+| Larger Font | `Cmd + +` | `Ctrl + +`
+| Smaller Font | `Cmd + -` | `Ctrl + -`
+| Reset Font Size | `Cmd + 0` | `Ctrl + 0`
+| Bookmark Active Symbol | `Cmd + S` | `Ctrl + S`
+| Bookmark Manager | `Cmd + B` | `Ctrl + B`
 
 #### Graph View
 
-| Shortcut | Windows | macOS | Linux
-| --- | --- | --- | ---
-| Move Focus Within Nodes | `WASD` / `HJKL` / `Arrows` | `WASD` / `HJKL` / `Arrows` | `WASD` / `HJKL` / `Arrows`
-| Move Focus Within Edges | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows` | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows` | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows`
-| Activate Node/Edge | `Enter` / `E` | `Enter` / `E` | `Enter` / `E`
-| Activate Node in New Tab | `Ctrl + Shift + Enter` / `Ctrl + Shift + E` | `Cmd + Shift + Enter` / `Cmd + Shift + E` | `Ctrl + Shift + Enter` / `Ctrl + Shift + E`
-| Expand/Collapse Node | `Shift + Enter` / `Shift + E` | `Shift + Enter` / `Shift + E` | `Shift + Enter` / `Shift + E`
-| Pan | `Ctrl + Arrows` | `Cmd + Arrows` | `Ctrl + Arrows`
-| Zoom In | `Ctrl + Shift + Up` / `Ctrl + Mouse Wheel Up` | `Cmd + Shift + Up` / `Cmd + Mouse Wheel Up` | `Ctrl + Shift + Up` / `Ctrl + Mouse Wheel Up`
-| Zoom Out | `Ctrl + Shift + Down` / `Ctrl + Mouse Wheel Down` | `Cmd + Shift + Down` / `Cmd + Mouse Wheel Down` | `Ctrl + Shift + Down` / `Ctrl + Mouse Wheel Down`
-| Reset Zoom | `0` | `0` | `0`
-| Open Custom Trail Dialog | `Ctrl + U` | `Cmd + U` | `Ctrl + U`
+| Shortcut | macOS | Linux
+| --- | --- | ---
+| Move Focus Within Nodes | `WASD` / `HJKL` / `Arrows` | `WASD` / `HJKL` / `Arrows`
+| Move Focus Within Edges | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows` | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows`
+| Activate Node/Edge | `Enter` / `E` | `Enter` / `E`
+| Activate Node in New Tab | `Cmd + Shift + Enter` / `Cmd + Shift + E` | `Ctrl + Shift + Enter` / `Ctrl + Shift + E`
+| Expand/Collapse Node | `Shift + Enter` / `Shift + E` | `Shift + Enter` / `Shift + E`
+| Pan | `Cmd + Arrows` | `Ctrl + Arrows`
+| Zoom In | `Cmd + Shift + Up` / `Cmd + Mouse Wheel Up` | `Ctrl + Shift + Up` / `Ctrl + Mouse Wheel Up`
+| Zoom Out | `Cmd + Shift + Down` / `Cmd + Mouse Wheel Down` | `Ctrl + Shift + Down` / `Ctrl + Mouse Wheel Down`
+| Reset Zoom | `0` | `0`
+| Open Custom Trail Dialog | `Cmd + U` | `Ctrl + U`
 
 #### Code View
 
-| Shortcut | Windows | macOS | Linux
-| --- | --- | --- | ---
-| Next Reference | `Ctrl + G` | `Cmd + G` | `Ctrl + G`
-| Previous Reference | `Ctrl + Shift + G` | `Cmd + Shift + G` | `Ctrl + Shift + G`
-| Next Local Reference | `Ctrl + T` | `Cmd + T` | `Ctrl + T`
-| Previous Local Reference | `Ctrl + Shift + T` | `Cmd + Shift + T` | `Ctrl + Shift + T`
-| Move Focus Within Code | `WASD` / `HJKL` / `Arrows` | `WASD` / `HJKL` / `Arrows` | `WASD` / `HJKL` / `Arrows`
-| Move Focus to Closest Reference | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows` | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows` | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows`
-| Activate Location | `Enter` / `E` | `Enter` / `E` | `Enter` / `E`
-| Activate Location in New Tab | `Ctrl + Shift + Enter` / `Ctrl + Shift + E` | `Cmd + Shift + Enter` / `Cmd + Shift + E` | `Ctrl + Shift + Enter` / `Ctrl + Shift + E`
-| Scroll | `Ctrl + Arrows` | `Cmd + Arrows` | `Ctrl + Arrows`
+| Shortcut | macOS | Linux
+| --- | --- | ---
+| Next Reference | `Cmd + G` | `Ctrl + G`
+| Previous Reference | `Cmd + Shift + G` | `Ctrl + Shift + G`
+| Next Local Reference | `Cmd + T` | `Ctrl + T`
+| Previous Local Reference | `Cmd + Shift + T` | `Ctrl + Shift + T`
+| Move Focus Within Code | `WASD` / `HJKL` / `Arrows` | `WASD` / `HJKL` / `Arrows`
+| Move Focus to Closest Reference | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows` | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows`
+| Activate Location | `Enter` / `E` | `Enter` / `E`
+| Activate Location in New Tab | `Cmd + Shift + Enter` / `Cmd + Shift + E` | `Ctrl + Shift + Enter` / `Ctrl + Shift + E`
+| Scroll | `Cmd + Arrows` | `Ctrl + Arrows`
 
 ## Graph View
 The graph view visualizes the currently selected symbol and all its relationships to other symbols as an interactive graph visualization. You can also display whole call graphs, inheritance chains or include trees by using the toolbar in the top left. Read more about that at [Custom Trail](#custom-trail).
@@ -1261,18 +1170,6 @@ C/C++ Source Groups from Compilation Database offer the following configuration 
 | Precompiled Header File | Select the path to the header file that should be used to generate a Precompiled Header File. The Precompiled Header File will be generated as pre-indexing step. If no path is supplied, no Precompiled Header File will be generated.
 | Precompiled Header Flags | Define if the already supplied compiler flags should be used for Precompiled Header File generation and define additional flags for Precompiled Header File generation only.<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
 
-## C/C++ Source Group from Visual Studio
-
-If you are using Visual Studio you can export a Compilation Database with our [Visual Studio Plugin](#visual-studio) and use it to create a project with Sourcetrail.
-
-<img src="docs/documentation/project_setup_wizard_visual_studio.png" width="700" alt="Project Setup Wizard Visual Studio">
-
-**Interactions:**
-
-* Clicking `Create CDB` will communicate to the [Visual Studio Plugin](#visual-studio) that a project should be exported as Compilation Database. Please have a look at the [Visual Studio Plugin](#visual-studio) for more details on the steps within Visual Studio.
-
-> After finishing the export process within Visual Studio the Source Group setup uses the same steps as creating a Source Group directly [from Compilation Database](#create-a-project-from-compilation-database).
-
 ## C/C++ Source Group from Code::Blocks
 
 If you already have a working Code::Blocks project (`.cbp`) for your source code you can use it to create a project with Sourcetrail. Note that a `.cbp` file will be generated by the **QtCreator** if a CMakeLists file is imported.
@@ -1292,63 +1189,9 @@ C/C++ Source Groups from Code::Blocks offer the following configuration options:
 | Global Framework Search Paths (macOS only) | These Framework Search Paths will be used in all your projects. (<br />For instructions on how to add paths see [Path List Box](#path-list-box). For instructions on how to find the system header paths see [Finding System Header Locations](#finding-system-header-locations))
 | Additional Compiler Flags | Define additional compiler flags used during indexing including the dash (e.g. use `-DRELEASE` to add a `#define` for `RELEASE`).<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
 
-## Empty Java Source Group
-
-Choose this option if you want to index Java files using Sourcetrail.
-Empty Java Source Groups offer the following configuration options:
-
-| Setting | Description
-| --- | ---
-| Standard | Select the language standard that should be used for indexing your the Source Group. Usually the most recent language standard is preselected here. (See [Language Support](#supported-languages))
-| Files & Directories to Index | These paths define the files and directories that will be indexed by Sourcetrail. Provide a directory to recursively add all contained source and header files. If your project's source code resides in one location, but generated source files are kept at a different location, you will also need to add that directory. You can make use of environment variables with ${ENV_VAR}.<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
-| Excluded Files & Directories | These paths define the files and directories that will be left out from indexing.<br />Hints:<br /><ul><li>You can use the wildcard `*` which represents characters except `\` or `/` (e.g. `src/*/test.h` matches `src/app/test.h` but does not match `src/app/widget/test.h` or `src/test.h`)</li><li>You can use the wildcard `**` which represents arbitrary characters (e.g. `src**test.h` matches `src/app/test.h` as well as `src/app/widget/test.h` or `src/test.h`)</li><li>You can make use of environment variables with `${ENV_VAR}`<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).</li></ul>
-| Source File Extensions | Define the valid extensions for source files including the dot e.g. `.java`. Sourcetrail will only try to index files that match one of these extensions.
-| Class Path | Enter all the .jar files your project depends on. If your project depends on uncompiled java code that should not be indexed, please add the root directory of those .java files here (the one where all the package names are relative to). You can make use of environment variables with ${ENV_VAR}.
-| JRE System Library | Tick this box to use the JRE System library jars specified in your application settings. Disable this setting if you want to use another JRE System library for this project and add the respective jars to the project's Class Path.
-
-## Java Source Group from Gradle
-
-If you are using a Gradle configuration to manage and build your project use this approach to create a Sourcetrail Source Group.
-Java Source Groups from Gradle offer the following configuration options:
-
-| Setting | Description
-| --- | ---
-| Standard | Select the language standard that should be used for indexing your the Source Group. Usually the most recent language standard is preselected here. (See [Language Support](#supported-languages))
-| Gradle Project File |  The path to the `build.gradle` file in the root folder of your Gradle project.
-| Should Index Tests |  This checkbox indicates whether or not Sourcetrail indexes the test code that is part of your Gradle project.
-| Intermediate Dependencies Directory | Directory where Sourcetrail stores all of the project's `.jar` dependencies.
-| Excluded Files & Directories | These paths define the files and directories that will be left out from indexing.<br />Hints:<br /><ul><li>You can use the wildcard `*` which represents characters except `\` or `/` (e.g. `src/*/test.h` matches `src/app/test.h` but does not match `src/app/widget/test.h` or `src/test.h`)</li><li>You can use the wildcard `**` which represents arbitrary characters (e.g. `src**test.h` matches `src/app/test.h` as well as `src/app/widget/test.h` or `src/test.h`)</li><li>You can make use of environment variables with `${ENV_VAR}`<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).</li></ul>
-| Source File Extensions | Define the valid extensions for source files including the dot e.g. `.java`. Sourcetrail will only try to index files that match one of these extensions.
-
-## Java Source Group from Maven
-
-If you are using a Maven configuration to manage and build your project use this approach to create a Sourcetrail Source Group.
-Java Source Groups from Maven offer the following configuration options:
-
-| Setting | Description
-| --- | ---
-| Standard | Select the language standard that should be used for indexing your the Source Group. Usually the most recent language standard is preselected here. (See [Language Support](#supported-languages))
-| Maven Project File |  The path to the `pom.xml` file in the root folder of your Maven project.
-| Should Index Tests |  This checkbox indicates whether or not Sourcetrail indexes the test code that is part of your Maven project.
-| Intermediate Dependencies Directory | Directory where Sourcetrail stores all of the project's `.jar` dependencies.
-| Excluded Files & Directories | These paths define the files and directories that will be left out from indexing.<br />Hints:<br /><ul><li>You can use the wildcard `*` which represents characters except `\` or `/` (e.g. `src/*/test.h` matches `src/app/test.h` but does not match `src/app/widget/test.h` or `src/test.h`)</li><li>You can use the wildcard `**` which represents arbitrary characters (e.g. `src**test.h` matches `src/app/test.h` as well as `src/app/widget/test.h` or `src/test.h`)</li><li>You can make use of environment variables with `${ENV_VAR}`<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).</li></ul>
-| Source File Extensions | Define the valid extensions for source files including the dot e.g. `.java`. Sourcetrail will only try to index files that match one of these extensions.
-
-## Empty Python Source Group
-
-Choose this option if you want to index Python files using Sourcetrail.
-Empty Python Source Groups offer the following configuration options:
-
-| Setting | Description
-| --- | ---
-| Python Environment | Here you can specify the path to the directory or to the executable of the (virtual) Python environment that should be used to resolve dependencies within the indexed source code.<br />If you would run:<br />`$ cd c:\dev\python\envs`<br />`$ virtualenv py37`<br />you would set it to `C:\dev\python\envs\py37` or `C:\dev\python\envs\py37\Scripts\python.exe`.<br />Leave blank to use the default Python environment. You can make use of environment variables with `${ENV_VAR}`.
-| Files & Directories to Index | These paths define the files and directories that will be indexed by Sourcetrail. Provide a directory to recursively add all contained source and header files. If your project's source code resides in one location, but generated source files are kept at a different location, you will also need to add that directory. You can make use of environment variables with ${ENV_VAR}.<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
-| Excluded Files & Directories | These paths define the files and directories that will be left out from indexing.<br />Hints:<br /><ul><li>You can use the wildcard `*` which represents characters except `\` or `/` (e.g. `src/*/test.h` matches `src/app/test.h` but does not match `src/app/widget/test.h` or `src/test.h`)</li><li>You can use the wildcard `**` which represents arbitrary characters (e.g. `src**test.h` matches `src/app/test.h` as well as `src/app/widget/test.h` or `src/test.h`)</li><li>You can make use of environment variables with `${ENV_VAR}`<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).</li></ul>
-| Source File Extensions | Define the valid extensions for source files including the dot e.g. `.py`. Sourcetrail will only try to index files that match one of these extensions.
-
 ## Custom Command Source Group
 
-In a Custom Command Source Group you can define a set of files and a command line call used to index each of these files. This Source Group type was introduced to integrate custom indexers written with [SourcetrailDB](https://github.com/CoatiSoftware/SourcetrailDB).
+In a Custom Command Source Group you can define a set of files and a command line call used to index each of these files. This Source Group type can be used to integrate custom indexers that write a Sourcetrail database.
 
 Custom Command Source Groups offer the following configuration options:
 
@@ -1364,7 +1207,7 @@ Custom Command Source Groups offer the following configuration options:
 
 In order to make Sourcetrail the perfect partner for your development workflow you can connect Sourcetrail with different code editors. You can find more information on the plugins in Sourcetrail's download package located in the folder `/ide_plugins`. Have a look at the following list of supported code editors to find out what editors are currently supported.
 
-The plugins are Opensource and available on [github](https://github.com/CoatiSoftware/).
+The plugins were written by the original authors of Sourcetrail and are hosted in their repositories. They are not maintained by this fork and are listed for reference only.
 
 **Supported Editors:**
 
@@ -1378,10 +1221,6 @@ The plugins are Opensource and available on [github](https://github.com/CoatiSof
 * Sublime Text 3
 * Vim
 * Visual Studio Code
-* Visual Studio 2012
-* Visual Studio 2013
-* Visual Studio 2015
-* Visual Studio 2017
 
 The communication between Sourcetrail and the code editor is achieved using a local TCP connection. Sourcetrail uses the port 6667 to listen for incoming messages. Outgoing messages will be sent to the port 6666. The port numbers can be edited in the [Preferences Window](#preferences-window).
 
@@ -1548,81 +1387,6 @@ Use`:help sourcetrail.txt` get get more information about the plugin
 To start the Tcp Server go to the Command Palette(`Ctrl` + `Shift` + `P`) and type: `Sourcetrail: (Re)start server`
 To send a location to Sourcetrail, place the cursor and right-click and select `Sourcetrail: Send Location`
 or type in the Command Palette: `Sourcetrail: Send Location`
-
-### Visual Studio
-
-**Download, Reviews:**
-[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=vs-publisher-1208751.SourcetrailExtension)
-
-**Repo**: [https://github.com/CoatiSoftware/vs-sourcetrail](https://github.com/CoatiSoftware/vs-sourcetrail)
-
-**Installation**
-
-1. open Visual Studio
-1. from the menu bar select "Tools" -> "Extensions and Updates..."
-1. in the "Extensions and Updates" dialog choose "Online" -> "Visual Studio Gallery"
-1. press `Ctrl` + `E` and enter "Sourcetrail Extension" into the search bar
-1. click the install button
-
-**Use**
-
-If you want Visual Studio to activate a certain element in Sourcetrail, right-click that element to bring up the context menu and choose the “Set active Token” option.
-
-!["Plugin Use In Visual Studio"](docs/documentation/plugin_use_in_visual_studio.png "Plugin Use In Visual Studio")
-
-**Create a Clang Compilation Database from a VS Solution**
-
-As a Clang based tool Sourcetrail supports the JSON Compilation Database format for simplified project setup. This extension enables you to generate a JSON Compilation Database from your Visual Studio projects and solutions. The great news is: This format is independent from the Sourcetrail tool, so you can also use the generated Compilation Database to run other Clang based tools.
-The wizard for creating a Compilation Database is located in the Sourcetrail section in the VS menu bar. Note that the option is only useable if a solution containing at least one C/C++ project is loaded.
-
-!["VS Plugin Menu"](docs/documentation/vs_plugin_menu.png "VS Plugin Menu")
-
-In the Compilation Database wizard you can select projects you want to include in the JSON file as well as the desired build target platform and configuration and a number of other options.
-
-!["VS Extension Dialog"](docs/documentation/vs_extension_dialog.png "VS Extension Dialog")
-
-| Option | Description
-| --- | ---
-| Select Projects | The list of C/C++ projects in your solution. Check all projects you want to be included in the generated JSON Compilation Database file.
-| De/Select All | Will select all projects if at least one project is not selected. If all projects are selected they will all be unselected.
-| Configuration | A dropdown list of the available build configurations. The selected configuration affects include paths and compile flags for the Compilation Database.
-| Platform | A dropdown list of the available target platforms. The selected platform affects include paths and compile flags for the Compilation Database.
-| Browse | Opens a folder browser to select the directory where the Compilation Database will be created in. By default it is the directory of your solution. Instead of using the folder browser you can also paste a path into the adjacent text field.
-| filename | This is the name for the Compilation Database file. By default it is the same name as your solution.
-| C Standard | A dropdown list of all C standards supported by Sourcetrail. If your projects contain C files select the appropriate standard.
-| Cancel | Aborts the process and closes the wizard.
-| Create | Creates the Compilation Database using the specified options. Note that at least one project has to be selected to start creating.
-
-Once the Compilation Database was successfully created it can be found in the specified target directory. From this Compilation Database you can create a Sourcetrail project as [described above](#create-a-project-from-compilation-database).
-
-**Settings**
-Network settings and logging options can be changed in the plugin's Tools/Options entry.
-
-!["VS Plugin Ports 0"](docs/documentation/vs_plugin_ports_0.png "VS Plugin Ports 0")
-!["VS Plugin Ports 1"](docs/documentation/vs_plugin_ports_1.png "VS Plugin Ports 1")
-
-| Option | Description
-| --- | ---
-| File Logging | Enable log output for the plugin. Additionally to the output file, log messages will also be displayed in VS'
-| Log Obfuscation | Obfuscate project names and file names as well as directories in the log output. Note that already logged data **will not be obfuscated retroactively**. A dictionary, mapping obfuscated names to original names, will be created in a separate file.
-| Sourcetrail Port | The port on which Sourcetrail will receive messages. Note that this must match the port setting in Sourcetrail itself.
-| Thread Count | The number of threads used during creation of the Compilation Database
-| VS Port | The port on which Visual Studio will receive messages. Note that this must match the port setting in Sourcetrail itself.
-
-**Logging**
-
-The plugin offers optional file logging. Should you ever have issues with the plugin we recommend to turn logging on. This will help to pinpoint and resolve the root cause faster.
-Logs will be created in `..\AppData\Local\Coati Software\Plugins\VS` folder. A new log file will be created every time you restart VS and logging is enabled.
-
-!["VS Log Folder"](docs/documentation/vs_log_folder.png "VS Log Folder")
-
-Note that the logs will include project names and file names as well as directories specific to your project. If you wish to keep this information secret you can enable [log obfuscation](#vs-plugin-option-obfuscation).
-Project- and file names as well as directories will be replaced by an alphanumeric sequence. The sequence has the form `a0, b0, c0,..., a1, b1, c1,...`. Note that after switching on obfuscation, already logged data **will not be obfuscated retroactively**. No log files will be send to Coati Software automatically. You can check any file you may want to send us for sensible information before sending it.
-A dictionary, mapping obfuscated names to original names, will be created in your log folder if log obfuscation is switched on. When during the support process we refer to project items by their obfuscated name you can still make sense of it. **Do not send the dictionary to anybody else**.
-
-Lastly, log messages are also displayed in the VS output window. This is tied to file logging and is not enabled or disabled separately.
-
-!["VS Output Window"](docs/documentation/vs_output_window.png "VS Output Window")
 
 ## IDE Communication Protocol
 

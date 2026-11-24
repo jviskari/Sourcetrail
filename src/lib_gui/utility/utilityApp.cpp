@@ -17,6 +17,7 @@
 #include <QThread>
 
 #include "ScopedFunctor.h"
+#include "project_info.h"
 #include "logging.h"
 #include "utilityString.h"
 
@@ -26,9 +27,42 @@ std::mutex s_runningProcessesMutex;
 std::set<std::shared_ptr<boost::process::child>> s_runningProcesses;
 }	 // namespace utility
 
+std::string utility::getProjectUrl()
+{
+	std::string url = PROJECT_URL;
+	while (!url.empty() && url.back() == '/')
+	{
+		url.pop_back();
+	}
+	return url;
+}
+
 std::string utility::getDocumentationLink()
 {
-	return "https://github.com/CoatiSoftware/Sourcetrail/blob/master/DOCUMENTATION.md";
+	const std::string url = getProjectUrl();
+	return url.empty() ? "" : url + "/blob/master/DOCUMENTATION.md";
+}
+
+std::string utility::getChangelogLink()
+{
+	const std::string url = getProjectUrl();
+	return url.empty() ? "" : url + "/blob/master/CHANGELOG.md";
+}
+
+std::string utility::getIssuesLink()
+{
+	const std::string url = getProjectUrl();
+	return url.empty() ? "" : url + "/issues";
+}
+
+std::string utility::getDocumentationLinkHtml(const std::string& anchor, const std::string& text)
+{
+	const std::string link = getDocumentationLink();
+	if (link.empty())
+	{
+		return text;
+	}
+	return "<a href=\"" + link + "#" + anchor + "\">" + text + "</a>";
 }
 
 std::wstring utility::searchPath(const std::wstring& bin, bool& ok)

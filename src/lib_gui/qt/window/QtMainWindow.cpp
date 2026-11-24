@@ -510,14 +510,12 @@ void QtMainWindow::showErrorHelpMessage()
 
 void QtMainWindow::showChangelog()
 {
-	QDesktopServices::openUrl(QUrl(
-		QStringLiteral("https://github.com/CoatiSoftware/Sourcetrail/blob/master/CHANGELOG.md")));
+	QDesktopServices::openUrl(QUrl(QString::fromStdString(utility::getChangelogLink())));
 }
 
 void QtMainWindow::showBugtracker()
 {
-	QDesktopServices::openUrl(
-		QUrl(QStringLiteral("https://github.com/CoatiSoftware/Sourcetrail/issues")));
+	QDesktopServices::openUrl(QUrl(QString::fromStdString(utility::getIssuesLink())));
 }
 
 void QtMainWindow::showLicenses()
@@ -1077,9 +1075,12 @@ void QtMainWindow::setupHelpMenu()
 
 	menu->addAction(tr("Keyboard Shortcuts"), this, &QtMainWindow::showKeyboardShortcuts);
 	menu->addAction(tr("Fixing Errors"), this, &QtMainWindow::showErrorHelpMessage);
-	menu->addAction(tr("Documentation"), this, &QtMainWindow::showDocumentation);
-	menu->addAction(tr("Changelog"), this, &QtMainWindow::showChangelog);
-	menu->addAction(tr("Bug Tracker"), this, &QtMainWindow::showBugtracker);
+	if (!utility::getDocumentationLink().empty())
+	{
+		menu->addAction(tr("Documentation"), this, &QtMainWindow::showDocumentation);
+		menu->addAction(tr("Changelog"), this, &QtMainWindow::showChangelog);
+		menu->addAction(tr("Bug Tracker"), this, &QtMainWindow::showBugtracker);
+	}
 
 	menu->addSeparator();
 
