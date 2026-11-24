@@ -81,7 +81,7 @@ endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_C_STANDARD 11)
 
 
@@ -188,19 +188,17 @@ find_package(Boost 1.67 COMPONENTS system program_options filesystem date_time R
 
 # Qt ---------------------------------------------------------------------------
 
-set (QT_MIN_VERSION "5.12.0")
-set (QT_MIN_VERSION_HEX 0x051200)
-find_package(Qt5 ${QT_MIN_VERSION} COMPONENTS Widgets PrintSupport Network Svg REQUIRED)
+set (QT_MIN_VERSION "6.2.0")
+set (QT_MIN_VERSION_HEX 0x060200)
+find_package(Qt6 ${QT_MIN_VERSION} COMPONENTS Widgets PrintSupport Network Svg SvgWidgets Core5Compat REQUIRED)
 
-if (WIN32)
-	find_package(Qt5 ${QT_MIN_VERSION} COMPONENTS WinExtras REQUIRED)
-endif()
+# Note: Qt6 dropped the WinExtras module, Windows specific code must not depend on it.
 
-if(Qt5Widgets_FOUND)
-	message(STATUS "Found Qt ${Qt5Widgets_VERSION_STRING}")
+if(Qt6Widgets_FOUND)
+	message(STATUS "Found Qt ${Qt6Widgets_VERSION}")
 
 	# FIX: Qt was built with -reduce-relocations
-	if (Qt5_POSITION_INDEPENDENT_CODE)
+	if (Qt6_POSITION_INDEPENDENT_CODE)
 		SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
 	endif()
 
@@ -312,16 +310,13 @@ target_include_directories(${LIB_UTILITY_PROJECT_NAME} SYSTEM
 	PUBLIC ${Boost_INCLUDE_DIR}
 )
 
-target_link_libraries(${LIB_UTILITY_PROJECT_NAME} ${Boost_LIBRARIES} Qt5::Widgets Qt5::Network)
+target_link_libraries(${LIB_UTILITY_PROJECT_NAME} ${Boost_LIBRARIES} Qt6::Widgets Qt6::Network Qt6::Core5Compat)
 
 if (UNIX AND NOT APPLE)
 	find_package(Threads REQUIRED)
 	target_link_libraries(${LIB_UTILITY_PROJECT_NAME} ${CMAKE_DL_LIBS} rt ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
-if (WIN32)
-	target_link_libraries(${LIB_UTILITY_PROJECT_NAME} Qt5::WinExtras)
-endif()
 
 
 # Lib --------------------------------------------------------------------------
@@ -540,11 +535,8 @@ add_custom_target(
 
 add_library(${LIB_GUI_PROJECT_NAME} ${LIB_GUI_FILES} ${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h)
 
-target_link_libraries(${LIB_GUI_PROJECT_NAME} ${LIB_UTILITY_PROJECT_NAME} ${LIB_PROJECT_NAME} Qt5::Widgets Qt5::Network Qt5::Svg)
+target_link_libraries(${LIB_GUI_PROJECT_NAME} ${LIB_UTILITY_PROJECT_NAME} ${LIB_PROJECT_NAME} Qt6::Widgets Qt6::Network Qt6::Svg Qt6::SvgWidgets Qt6::PrintSupport Qt6::Core5Compat)
 
-if (WIN32)
-	target_link_libraries(${LIB_GUI_PROJECT_NAME} Qt5::WinExtras)
-endif()
 
 # command for versioning script
 add_custom_command(
@@ -741,9 +733,7 @@ target_include_directories(${APP_PROJECT_NAME} SYSTEM
 	"${EXTERNAL_C_INCLUDE_PATHS}"
 )
 
-# Use the Widgets module from Qt 5.
-qt5_use_modules(${APP_PROJECT_NAME} Widgets)
-qt5_use_modules(${APP_PROJECT_NAME} Network)
+target_link_libraries(${APP_PROJECT_NAME} Qt6::Widgets Qt6::Network)
 
 # add platform specific libraries
 if (APPLE)

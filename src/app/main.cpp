@@ -111,10 +111,7 @@ int main(int argc, char* argv[])
 
 	QApplication::setApplicationName(QStringLiteral("Sourcetrail"));
 
-	if (utility::getOsType() != OS_LINUX)
-	{
-		QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
-	}
+	// Qt 6 always enables high DPI scaling.
 
 	Version version(VERSION_YEAR, VERSION_MINOR, VERSION_COMMIT, GIT_COMMIT_HASH);
 	QApplication::setApplicationVersion(version.toDisplayString().c_str());
@@ -195,8 +192,6 @@ int main(int argc, char* argv[])
 		setupApp(argc, argv);
 
 		setupLogging();
-
-		qtApp.setAttribute(Qt::AA_UseHighDpiPixmaps);
 
 		QtViewFactory viewFactory;
 		QtNetworkFactory networkFactory;
