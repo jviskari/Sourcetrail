@@ -1,6 +1,6 @@
 # Sourcetrail
 
-Sourcetrail is a free and open-source source explorer that helps you get productive on unfamiliar source code.
+Sourcetrail is a free and open-source source explorer that helps you get productive on unfamiliar C and C++ source code.
 
 This is an **independent fork** of the original [Sourcetrail](https://github.com/CoatiSoftware/Sourcetrail), which its authors archived at the end of 2021. It is not affiliated with, endorsed by, or maintained by the original authors, and changes are not intended to be contributed upstream.
 
@@ -8,20 +8,20 @@ This is an **independent fork** of the original [Sourcetrail](https://github.com
 
 ## What is different in this fork
 
-* Ported from Qt 5 to **Qt 6** (6.2 or newer) and from C++17 to **C++20**.
+* Ported from Qt 5 to **Qt 6** (6.2 or newer), from C++17 to **C++20**, and from LLVM 11 to **LLVM 18**.
+* **C and C++ only.** Java and Python indexing have been removed.
 * **Linux** is the primary target. macOS should work but is untested.
-* Windows and Java support are being removed. Some of their code and scripts are still in the tree but are no longer maintained.
-* The upstream CI (Travis, AppVeyor), Patreon funding and in-app links to the original project are being phased out.
+* Windows support, the Visual Studio source group and the Windows installer have been removed.
+* The upstream CI, Patreon funding and sponsors have been removed.
 
 ## Status
 
 | Area | State |
 |---|---|
-| Linux, GCC 13, Qt 6.4, Boost 1.83 | Builds, 318 of 320 unit tests pass |
-| macOS | Untested, bundle script still references Qt 5 |
-| C/C++ indexing | Builds only with Clang/LLVM, not verified on the Qt 6 port |
-| Python indexing | Needs the prebuilt upstream indexer, see below |
-| Java indexing | Being removed |
+| Linux, GCC 13, Qt 6.4, Boost 1.83, LLVM 18 | Builds. 604 of 606 unit tests pass, including the C/C++ parser tests |
+| C/C++ indexing | Works, a bundled sample project indexes with 0 errors |
+| macOS | Untested, the bundle script still references Qt 5 |
+| Docker builder | Written but never run |
 
 Known test failures: two symlink tests in `FileSystemTestSuite.cpp`.
 
@@ -47,13 +47,15 @@ Required tools and libraries (package names are for Ubuntu 24.04):
 | CMake | 3.8 or newer | `cmake` |
 | Boost | 1.67 or newer, 1.83 tested | `libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-date-time-dev` |
 | Qt | 6.2 or newer, 6.4 tested | `qt6-base-dev qt6-svg-dev qt6-5compat-dev libgl-dev` |
+| Clang/LLVM | 18 tested | `clang-18 libclang-18-dev llvm-18-dev` |
 | Git | any | `git` (the version number is generated from tags and commits) |
 | Ninja, ccache | optional | `ninja-build ccache` |
 
 ```
 $ git clone <repository-url> Sourcetrail
 $ cd Sourcetrail
-$ cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+$ cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \
+    -DClang_DIR=/usr/lib/llvm-18/lib/cmake/clang
 $ cmake --build build
 ```
 
@@ -74,27 +76,17 @@ $ cd build/test
 $ QT_QPA_PLATFORM=offscreen ./Sourcetrail_test
 ```
 
-## Language support
+## Indexing a project
 
-The base application opens and browses existing Sourcetrail databases. Indexing source code needs a language package, which is off by default.
+Sourcetrail indexes C and C++ source code with Clang. The easiest way to set up a project is a compilation database (`compile_commands.json`), which CMake exports with `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON`. See [DOCUMENTATION.md](DOCUMENTATION.md) for the other project types.
 
-### C and C++
-
-Needs Clang/LLVM development files, for example `clang-18 libclang-18-dev llvm-18-dev` on Ubuntu 24.04. The original project used LLVM 11, so expect to fix build errors with newer versions.
+To try it, index the bundled sample project from the command line:
 
 ```
-$ cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_CXX_LANGUAGE_PACKAGE=ON \
-    -DClang_DIR=/usr/lib/llvm-18/lib/cmake/clang
+$ build/app/Sourcetrail index --full bin/app/user/projects/tictactoe_cpp/tictactoe_cpp.srctrlprj
 ```
 
-### Python
-
-Python indexing uses the prebuilt `SourcetrailPythonIndexer` published by the original authors, which `script/download_python_indexer.sh` fetches during the build. It is a separate, unmaintained binary that is not built from this repository.
-
-```
-$ cmake -S . -B build -DBUILD_PYTHON_LANGUAGE_PACKAGE=ON
-```
+Indexing can be turned off at configure time with `-DBUILD_CXX_LANGUAGE_PACKAGE=OFF`. The application then only opens existing databases.
 
 ## Docker build options
 
@@ -103,12 +95,11 @@ $ cmake -S . -B build -DBUILD_PYTHON_LANGUAGE_PACKAGE=ON
 | Build arg | Default | Meaning |
 |---|---|---|
 | `BUILD_TYPE` | `Release` | CMake build type |
-| `BUILD_CXX_INDEXER` | `OFF` | Install LLVM and build the C/C++ indexer |
-| `LLVM_VERSION` | `18` | LLVM version used when the C/C++ indexer is on |
-| `RUN_TESTS` | `OFF` | Run the unit tests during the build |
+| `LLVM_VERSION` | `18` | Clang/LLVM version to build against |
+| `RUN_TESTS` | `OFF` | Run the unit tests during the build, currently fails on the two known symlink tests |
 | `UBUNTU_VERSION` | `24.04` | Base image |
 
-Example: `script/docker/build_linux.sh out --build-arg BUILD_CXX_INDEXER=ON`
+Example: `script/docker/build_linux.sh out --build-arg LLVM_VERSION=18`
 
 ## Packaging
 

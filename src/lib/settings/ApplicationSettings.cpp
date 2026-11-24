@@ -77,7 +77,6 @@ bool ApplicationSettings::load(const FilePath& filePath, bool readOnly)
 			[](const SettingsMigration* migration, Settings* settings)
 			{
 				std::vector<std::string> recentProjects;
-				recentProjects.push_back("./projects/tictactoe_py/tictactoe_py.srctrlprj");
 				utility::append(
 					recentProjects,
 					migration->getValuesFromSettings(
